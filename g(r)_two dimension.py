@@ -101,27 +101,27 @@ font_size = 14
 plt.rcParams.update({'font.size': font_size})
 
 # 设置曲线透明度
-alpha_value = 0.5  # 您可以修改此值来改变曲线的透明度（0到1之间）
+alpha_value = 0.6  # 您可以修改此值来改变曲线的透明度（0到1之间）
 
 # 绘制g(r_perp)
-plt.figure(figsize=(12, 5))
+plt.figure(figsize=(10, 4), dpi=300)
 
 plt.subplot(1, 2, 1)
-plt.plot(r_perp_bins1, gr_perp1, label='Simulation structure', alpha=1)
-plt.plot(r_perp_bins2, gr_perp2, label='Fitting structure', alpha=alpha_value)
+plt.plot(r_perp_bins1, gr_perp1, label='Simulation structure', color="#000000", alpha=1)
+plt.plot(r_perp_bins2, gr_perp2, label='Fitting structure', color="#2C939A", alpha=alpha_value)
 plt.xlabel('$r_{\\perp}$', fontsize=font_size)
 plt.ylabel('$g(r_{\\perp})$', fontsize=font_size)
-plt.title('$g(r_{\\perp})$ Comparison', fontsize=font_size + 2)
+#plt.title('$g(r_{\\perp})$', fontsize=font_size + 2)
 plt.legend(fontsize=font_size)
 plt.tick_params(axis='both', which='major', labelsize=font_size)
 
 # 绘制g(r_parallel)
 plt.subplot(1, 2, 2)
-plt.plot(r_parallel_bins1, gr_parallel1, label='Simulation structure', alpha=1)
-plt.plot(r_parallel_bins2, gr_parallel2, label='Fitting structure', alpha=alpha_value)
+plt.plot(r_parallel_bins1, gr_parallel1, label='Simulation structure',  color="#000000", alpha=1)
+plt.plot(r_parallel_bins2, gr_parallel2, label='Fitting structure',  color="#2C939A", alpha=alpha_value)
 plt.xlabel('$r_{\\parallel}$', fontsize=font_size)
 plt.ylabel('$g(r_{\\parallel})$', fontsize=font_size)
-plt.title('$g(r_{\\parallel})$ Comparison', fontsize=font_size + 2)
+#plt.title('$g(r_{\\parallel})$', fontsize=font_size + 2)
 plt.legend(fontsize=font_size)
 plt.tick_params(axis='both', which='major', labelsize=font_size)
 

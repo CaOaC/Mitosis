@@ -1,2 +1,6 @@
 # Mitosis
-Here we provide the codes for the paper "Motorized Chromosome Models of Mitosis".
+Here we provide the codes for the paper "Motorized Chromosome Models of Mitosis" (arXiv:2501.09873).
+
+To simulate the structure of motorized chromosomes, please download "Motorized_mitosis.zip". The initial structures for the simulation refer to "input_interphase.txt" and "mitotic_chromosome.txt", which correspond to the steady states without motor driving and with two types of motors (condensin I & II), respectively. Please create a folder named "Input" in the program folder and place the above initial structure files inside it. At the same time, generate a folder named "Output", where all output files can be accessed after running the program. Our program allows for simulations using random initial configurations, which can be simply selected through the "True" or "False" command in the program. Unless otherwise specified, all steady-state structures are independent of the selection of the above initial structures. 
+
+In addition, other programs in the program that process data are also available for reference and use.

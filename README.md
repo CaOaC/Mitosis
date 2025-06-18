@@ -7,4 +7,4 @@ The representative simulated trajectories for both the puly sequence-distance-de
 
 In addition, other programs used in the manuscript that process data are also available for reference and use.
 
-![描述](./)
+![描述](./Movie S1_Organization of chromosome.gif)

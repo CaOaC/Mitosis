@@ -20,7 +20,7 @@ Simulation tool for modeling motorized chromosome.
 
 - [CUDA](https://developer.nvidia.com/cuda-downloads) ≥ 11.2
 - [GNU Make](https://www.gnu.org/software/make/) ≥ 4.2.1
-- 操作系统：建议使用 GNU/Linux（如 Ubuntu 20.04 或更高）
+- OS: Recommended GNU/Linux (e.g., Ubuntu 20.04 or higher)
 
 
 

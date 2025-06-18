@@ -36,12 +36,12 @@ git clone https://github.com/CaOaC/Mitosis.git
 # 准备输入和输出文件夹
 mkdir Input Output
 
-cd Mitosis
+cd Mitosis/src
 
 # 构建并运行程序
 make -j8
 
-./kicktauleap
+./kickModel
 ```
 
 
@@ -52,20 +52,30 @@ make -j8
 
 
 
-You can load the following files from the **`Output`** **Output** directory into `OVITO` to visualize the simulation trajectory.
+You can load the following files from the **`Output`** **Output** **Output** directory into `OVITO` to visualize the simulation trajectory.
 
 - `.dump` file: trajectory animation
 - `.data` file: topological structure
 
+
 <h3>🎞️ movie </h3>
+
+
 
 <p>Visualization of chromosome folding process:</p>
 
+
+
 <div align="center">
+
+
 
   <img src="./media/demo.gif" width="500"/>
 
+
+
 </div>
+
 
 
 

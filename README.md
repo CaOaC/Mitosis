@@ -59,7 +59,7 @@ You can load the following files from the **`Output`** **Output** directory into
 
 <h3>🎞️ movie </h3>
 
-<p>Visualization of chromosome condensation process:</p>
+<p>Visualization of chromosome folding process:</p>
 
 <div align="center">
 

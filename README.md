@@ -74,5 +74,5 @@ make -j8
 - `.data` 文件：拓扑结构
 - `.txt` 文件：单位时间每个 beads 的抓取次数
 
-![]()
+![](./media/demo.gif)
 

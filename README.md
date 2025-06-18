@@ -6,3 +6,5 @@ To simulate the structure of motorized chromosomes, please download "Motorized_m
 The representative simulated trajectories for both the puly sequence-distance-dependent model and the spatial-distance-dependent model are attached at https://drive.google.com/drive/folders/1t2pTvgPTHxSTNimGVahHoQ1uWVwCQbTx?usp=sharing ("Output_sequence dependent.zip" and "Output_r dependent.zip"). Each compressed file contains at least 13 simulated trajectories to ensure repeatability by starting with different random initial configurations. Drag the corresponding ".dump" file and ".data" into the OVITO at the same time to watch the evolution of the simulation trajectory. The kicking numbers for each bead per unit time are recorded in the ".txt" file. 
 
 In addition, other programs used in the manuscript that process data are also available for reference and use.
+
+![描述](./)

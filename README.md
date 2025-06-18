@@ -58,8 +58,7 @@ You can load the following files from the **`Output`** directory into `OVITO` to
 
 - `.data`
 
- file: topological structure  
-
+ file: topological structure
 
 
 ![](./media/demo.gif)

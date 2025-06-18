@@ -85,7 +85,7 @@ You can load the following files from the **`Output`** **Output** **Output** dir
 
 
 
-Here we provide the codes for the manuscript "Motorized Chromosome Models of Mitosis" (arXiv:2501.09873).
+Here we provide the codes for the manuscript "Motorized Chromosome Models of Mitotic Chromosome Folding" (arXiv:2501.09873).
 
 
 

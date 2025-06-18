@@ -1,6 +1,6 @@
 # MITOSIS
 
-Simulation tool for modeling motorized chromosome.
+Simulation tools for modeling the motorized chromosome.
 
 
 
@@ -9,9 +9,9 @@ Simulation tool for modeling motorized chromosome.
 
 
 - Simulates the formation process of motor-driven chromosome structure
-- Supports both sequence-dependent and distance-dependent motor grabbing probabilities
-- Supports constant-force stretching of chromosome
-- Implements Condensin I / II motor activity models
+- Supports both purely sequence-distance-dependent and domain-specific spatial-distance-dependent motor grabbing probabilities
+- Supports constant-force stretching of the chromosome
+- Implements Condensin I / II motor activity models with residence
 - Compatible with OVITO for visualization of `.dump` and `.data` trajectory files
 
 ## 📦 Dependencies
@@ -93,7 +93,7 @@ The initial structures for the simulation refer to "input_interphase.txt" and "m
 
 
 
-The representative simulated trajectories for both the puly sequence-distance-dependent model and the spatial-distance-dependent model are attached at [https://drive.google.com/drive/folders/1t2pTvgPTHxSTNimGVahHoQ1uWVwCQbTx?usp=sharing](https://drive.google.com/drive/folders/1t2pTvgPTHxSTNimGVahHoQ1uWVwCQbTx?usp=sharing) ("Output_sequence dependent.zip" and "Output_r dependent.zip"). Each compressed file contains at least 13 simulated trajectories to ensure repeatability by starting with different random initial configurations. Drag the corresponding ".dump" file and ".data" into the OVITO at the same time to watch the evolution of the simulation trajectory. The kicking numbers for each bead per unit time are recorded in the ".txt" file.
+The representative simulated trajectories for both the puly sequence-distance-dependent model and the domain-specific spatial-distance-dependent model are attached at [https://drive.google.com/drive/folders/1t2pTvgPTHxSTNimGVahHoQ1uWVwCQbTx?usp=sharing](https://drive.google.com/drive/folders/1t2pTvgPTHxSTNimGVahHoQ1uWVwCQbTx?usp=sharing) ("Output_sequence dependent.zip" and "Output_r dependent.zip"). Each compressed file contains at least 13 simulated trajectories to ensure repeatability by starting with different random initial configurations. Drag the corresponding ".dump" file and ".data" files into OVITO simultaneously to view the evolution of the simulation trajectory. The kicking numbers for each bead per unit time are recorded in the ".txt" file.
 
 
 

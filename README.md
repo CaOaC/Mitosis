@@ -33,12 +33,12 @@ Clone the repository and compile the code:
 ```bash
 git clone https://github.com/CaOaC/Mitosis.git
 
-# 准备输入和输出文件夹
+# Prepare the input and output folders (准备输入和输出文件夹)
 mkdir Input Output
 
 cd Mitosis/src
 
-# 构建并运行程序
+# Compile and run the program (构建并运行程序)
 make -j8
 
 ./kickModel

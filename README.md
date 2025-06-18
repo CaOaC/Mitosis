@@ -57,11 +57,17 @@ You can load the following files from the **`Output`** **Output** directory into
 - `.dump` file: trajectory animation
 - `.data` file: topological structure
 
-<h3>🎞️ Animation Demo</h3>
+<h3>🎞️ movie </h3>
 
 <p>Visualization of chromosome condensation process:</p>
 
-<img src="./media/demo.gif" width="400" />
+<div align="center">
+
+  <img src="./media/demo.gif" width="500"/>
+
+</div>
+
+
 
 
 

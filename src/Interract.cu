@@ -183,15 +183,7 @@ __device__ float SC::calcForce(float r)
 			//ret = 0;
 			ret = 48 * epsion / r * (r12 - 0.5 * r6);
 		}
-
-		if (r < ro) {
-			ret = 48 * epsion / r * (r12 - 0.5 * r6) /powf(coshf(2*4/Ecut*epsion*(r12 - r6 + 0.25) - 1), 2);
-			//ret = 0;
-		}
-		else {
-			ret = 48 * epsion / r * (r12 - 0.5 * r6);
-			//ret = 0;
-		}
+		
 	}
 	return ret;
 }
@@ -215,15 +207,7 @@ __device__ float SC::calcPE(float r)
 		}
 		else {
 			ret = Ulj;
-		}
-		
-		if (r < ro) {
-			ret = 0.5 * Ecut * (1 + tanhf(2 * Ulj / Ecut - 1));
-			//printf("pe %f\n", ret);
-		}
-		else {
-			ret = Ulj;
-		}
+		}	
 	}
 	return ret;
 }

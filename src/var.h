@@ -51,8 +51,14 @@ namespace kick {
 	extern float kappa_short2;
 	//extern float kappa;
 	extern float kappa_long;
+	extern float ksb;
+	extern float klb;
+	extern float ks;
 	extern float l;
 	extern float s0;
+	extern float p10;
+	extern float p_slide;
+	extern float re;
 }
 
 namespace sim {

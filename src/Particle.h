@@ -67,9 +67,12 @@ public:
 
 __global__ void CalcAfterKickPosition(Prop* prop_, KMC* kmc_, Box* box);
 __global__ void CalcBendingdU(Prop* prop_, KMC* kmc_, Kratky_Porod angle);
-__global__ void CalcRate(KMC* kmc_, Prop* prop_, curandState* state, float beta, float tau, float* dis_, bool isCofRij);
+__global__ void CalcRate(KMC* kmc_, Prop* prop_, curandState* state, float beta, float tau, bool isCofRij);
+__global__ void CalcGrapplingIndicator(KMC* kmc_, curandState* state, float tau, float* dis_, bool isCofRij);
 __global__ void IsPosDivergency(Prop* prop_, int* isDivergencyed);
 __global__ void UpdateKickPosition(Prop* prop_);
+//__global__ void Update_flag(KMC* kmc_, curandState* state, float p10, float p_slide);
+__global__ void Update_flag(KMC* kmc_, Prop* prop_, float beta, curandState* state, float p10, float p_slide);
 
 
 template<typename BOND>

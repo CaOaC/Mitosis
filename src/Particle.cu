@@ -270,49 +270,114 @@ void Particle::updateKickPosition()
 	}
 }
 */
+__global__ void Update_flag(KMC* kmc_, Prop* prop_, float beta, curandState* state, float p10, float p_slide) {
+	int tid = threadIdx.x + blockDim.x * blockIdx.x;
+	if (tid < sim::activenumber_ * sim::activenumber_) {
+		if (kmc_->flag_[tid] == 1) {
+			float r = curand_uniform(state + tid);
+			if (r < p10) {
+				kmc_->flag_[tid] = 0;
+			}
+			else if (r < p_slide + p10) {
+				int i = tid / sim::activenumber_;
+				int j = tid % sim::activenumber_;
+				//printf("%d %d\n", i, j);
+				kmc_->flag_[tid] = 0;
+				float U = 0.5 * kmc_->ks * ((prop_[i].pos[0] - prop_[j].pos[0]) * (prop_[i].pos[0] - prop_[j].pos[0]) +
+					(prop_[i].pos[1] - prop_[j].pos[1]) * (prop_[i].pos[1] - prop_[j].pos[1]) +
+					(prop_[i].pos[2] - prop_[j].pos[2]) * (prop_[i].pos[2] - prop_[j].pos[2]));
+				int slide_id = tid;
+				int i_, j_;
+				if (i > j) {
+					i_ = (i < sim::activenumber_ - 1) ? i + 1 : i;
+					j_ = (j > 0) ? j - 1 : j;
+				}
+				slide_id = i_ * sim::activenumber_ + j_;
+				float U_prime = 0.5 * kmc_->ks * ((prop_[i_].pos[0] - prop_[j_].pos[0]) * (prop_[i_].pos[0] - prop_[j_].pos[0]) +
+					(prop_[i_].pos[1] - prop_[j_].pos[1]) * (prop_[i_].pos[1] - prop_[j_].pos[1]) +
+					(prop_[i_].pos[2] - prop_[j_].pos[2]) * (prop_[i_].pos[2] - prop_[j_].pos[2]));
+				float dU = U_prime - U;
+				float rate = 1;
+				if(dU > 0) rate = expf(-beta * dU);
+				//printf("%f\n", rate);
+				r = curand_uniform(state + tid);
+				if (r < rate) { kmc_->flag_[slide_id] = 1; }
+				else { kmc_->flag_[tid] = 1; }
+				if(!(SHORTDIS_ || LONGDIS_)) { kmc_->flag_[slide_id] = 0; }
+			}
+		}
+	}
+}
 
 __device__ int Poisson(float lambda, curandState* state, int tid);
-__global__ void CalcRate(KMC* kmc_, Prop* prop_, curandState* state, float beta, float tau, float* dis_=nullptr, bool isCofRij=false) {
+__global__ void CalcGrapplingIndicator(KMC* kmc_, curandState* state, float tau, float* dis_ = nullptr, bool isCofRij = false) {
+	int tid = threadIdx.x + blockDim.x * blockIdx.x;
+	if (tid < sim::activenumber_ * sim::activenumber_) {
+
+		float r = 0; float Cxy = 0; float rate = 0; int k = 0;
+
+		if (isCofRij) r = sqrtf(dis_[tid]);
+
+		r = sqrtf(dis_[tid]);
+
+		int i = tid / sim::activenumber_;
+		int j = tid % sim::activenumber_;
+		if (SHORTDIS || LONGDIS) {
+			if (kmc_->flag_[tid] == 0) {
+				int i = tid / sim::activenumber_;
+				int j = tid % sim::activenumber_;
+				if (isCofRij) {
+					Cxy = 0.1 / r;
+					//Cxy = expf(-r / kmc_->re);
+				}
+				else {
+					Cxy = 0.5 / fabsf(i - j);
+				}
+				if (SHORTDIS) {
+					rate = Cxy * kmc_->ksb;
+				}
+				else {
+					rate = Cxy * kmc_->klb;
+				}
+				k = Poisson(rate * tau, state, tid);
+				if (k > 0) {
+					kmc_->flag_[tid] = 1;
+				}  
+			}
+		}
+	}
+}
+
+__global__ void CalcRate(KMC* kmc_, Prop* prop_, curandState* state, float beta, float tau, bool isCofRij=false) {
 	int tid = threadIdx.x + blockDim.x * blockIdx.x;
 	if (tid < sim::activenumber_ * sim::activenumber_) {
 
 		int i = tid / sim::activenumber_;
 		int j = tid % sim::activenumber_;
 		int k = 0; float Cxy = 0; float rate = 0; float dU = 0;
-		float r = 0;
 
-		if (isCofRij) r = sqrtf(dis_[tid]);
+		if((SHORTDIS || LONGDIS)&& kmc_->flag_[tid] == 1) {
+			{
+				dU = kmc_->dU_[tid];
+				if (dU < -1.0) dU = -1.0;
+				if (SHORTDIS) {
+					kmc_->rate_[tid] = 0.5 * (prop_[i].kappa + prop_[j].kappa) * expf(-kmc_->s * beta * dU);
+				}
+				else {
+					kmc_->rate_[tid] = kmc_->kappa_long * expf(-kmc_->s * beta * dU);
+				}
+				rate = kmc_->rate_[tid];
 
-		r = sqrtf(dis_[tid]);
-
-		if (SHORTDIS || LONGDIS) {
-			if (isCofRij) {
-				Cxy = 0.1 / r;
+				k = Poisson(rate * tau, state, tid);
 			}
-			else {
-				Cxy = 0.5 / fabsf(i - j);
-			}
-			dU = kmc_->dU_[tid];
 			if (SHORTDIS) {
-				kmc_->rate_[tid] = Cxy * 0.5*(prop_[i].kappa + prop_[j].kappa) * expf(-kmc_->s * beta * dU);
+				atomicAdd(&prop_[i].kickNumber, k);
+				atomicAdd(&prop_[j].kickNumber, k);
+			}else{
+				atomicAdd(&prop_[i].kickNumber1, k);
+				atomicAdd(&prop_[j].kickNumber1, k);
 			}
-			else {
-				kmc_->rate_[tid] = Cxy * kmc_->kappa_long * expf(-kmc_->s * beta * dU);
-			}
 
-			//printf("before:%f %f\n", kmc_->rate_[tid], kmc_->dU_[tid]);
-			rate = kmc_->rate_[tid];
-
-			//printf("rate:%f\n", rate);
-			//printf("%f %f\n", rate, kmc_->dU_[tid]);
-
-			k = Poisson(rate*tau, state, tid);
-
-			atomicAdd(&prop_[i].kickNumber, k);
-			atomicAdd(&prop_[j].kickNumber, k);
-
-			//if (k > 10) k = 10;
-			//printf("%f %f %d\n", kmc_->rate_[tid], kmc_->dU_[tid], k);
 
 			for (int n = 0; n < DIMSIZE; n++) {
 				//prop_[i].pos[n] += k * kmc_->kickpos_[tid].e[n];
@@ -325,6 +390,7 @@ __global__ void CalcRate(KMC* kmc_, Prop* prop_, curandState* state, float beta,
 		}else {
 			kmc_->rate_[tid] = 0;
 		}
+			
 	}
 }
 
@@ -454,6 +520,7 @@ __global__ void Clear_force(Prop* prop_) {
 	}
 
 	prop_[tid].kickNumber = 0;
+	prop_[tid].kickNumber1 = 0;
 }
 
 __global__ void PerodicBoundary(Prop* prop_, Box* box);
@@ -620,6 +687,12 @@ void KMC::memory()
 	cudaMalloc((void**)&kickpos_, sizeof(V3) * sim::activenumber * sim::activenumber);
 
 	cudaMalloc((void**)&kickdpos_, sizeof(V3) * sim::activenumber * sim::activenumber);
+
+	cudaMalloc((void**)&flag_, sizeof(int) * sim::activenumber * sim::activenumber);
+
+	cudaMemset(flag_, 0, sizeof(int) * sim::activenumber * sim::activenumber);
+
+	flag = new int[sim::activenumber * sim::activenumber];
 }
 
 void ContactMap::memory()
@@ -747,3 +820,4 @@ __global__ void CalcBendingdU(Prop* prop_, KMC* kmc_, Kratky_Porod angle) {
 		}
 	}
 }
+

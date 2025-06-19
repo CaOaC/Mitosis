@@ -13,7 +13,7 @@ namespace rouse {
 namespace lj {
 	float sigma = 1.0;
 	float epi = 1.0/(media::beta);
-	float cutoff = 1.5 * sigma;
+	float cutoff = 1.12 * sigma;
 
 	float Ecut = 10.0 * epi;
 	float ro = 0.885 * sigma;
@@ -34,11 +34,17 @@ namespace fene {
 }
 
 namespace kick {
-	float kappa_short1 = 0.0;
-	float kappa_short2 = 0.0;
-	float kappa_long = 0.0;
+	float kappa_short1 = 0.4;
+	float kappa_short2 = 0.4;
+	float kappa_long = 0.4;
+	float ksb = 1.0;
+	float klb = 1.0;
+	float ks = 0;
 	float l = 0.005*lj::sigma;
 	float s0 = 1.0;
+	float p10 = 0.9;
+	float p_slide = 0;
+	float re = 2.5;
 }
 
 namespace var {
@@ -52,16 +58,16 @@ namespace var {
 }
 
 namespace sim {
-	int kickTime = 2e5;
-	int warm_cycles = 10;
+	int kickTime = 1e5;
+	int warm_cycles = 100;
 	float dt = 1.0e-4 / (media::mu);
 	int totalnumber = 1500;
 	int activenumber = 1500;
 	int ensembleID = 0;
 	int stepsPersecond = int(1.0/dt);
-	bool isRandConfig = false;
+	bool isRandConfig = true;
 	bool isCofRij = true;
-	bool isInputFile = true;
+	bool isInputFile = false;
 	__device__ __constant__ int totalnumber_;
 	__device__ __constant__ int activenumber_; 
 }

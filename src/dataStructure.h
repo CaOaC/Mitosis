@@ -16,6 +16,7 @@ struct Prop
 	bool IsActive;
 	float kappa;
 	int kickNumber;
+	int kickNumber1;
 };
 
 struct Adj {
@@ -30,12 +31,17 @@ struct KMC {
 	float* rate_;
 	float* rate;
 	float* dU_;
-	float* flag_;
+	int* flag_;
+	int* flag;
 
 	float l = kick::l;
 	float s = kick::s0;
 	float kappa = kick::kappa_short1;
 	float kappa_long = kick::kappa_long;
+	float ks = kick::ks;
+	float ksb = kick::ksb;
+	float klb = kick::klb;
+	float re = kick::re;
 	double totalKmcTime = 0;
 	void memory();
 };

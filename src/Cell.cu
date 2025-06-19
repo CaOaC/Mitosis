@@ -132,8 +132,9 @@ __global__ void CalcNoBondForce(Prop* prop_, Cell c, SC nobond, Box* box) {
 			}
 			//printf("%f\n", r2);
 			float r = sqrtf(r2);
+			//if (r < 0.8) r = 0.8;
 			float ff = nobond.calcForce(r);
-			//printf("%f\n", ff);
+			//if(ff > 200) printf("%f\n", ff);
 			for (int i = 0; i < DIMSIZE; i++) {
 				//printf("%f\n", ff * dist[i] / sqrtf(r2));
 				atomicAdd(&prop_[tid].force[i], ff * dist[i] / sqrtf(r2));

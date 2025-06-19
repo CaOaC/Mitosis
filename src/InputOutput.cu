@@ -34,34 +34,35 @@ void InputOutput::appendXyzTrajectory(unsigned int dimension, const Particle& pa
     FILE* pFile;
 
     char FPATH[100] = "";
-    sprintf(FPATH, "./Output/trajectory_kappa%.1f_%.1f.dump", kick::kappa_short1, kick::kappa_long);
+    sprintf(FPATH, "./Output/trajectory_kappa%.1f_%.1f_%.2f_%.2f_%d.dump", kick::kappa_short1, kick::kappa_long, kick::p10, kick::p_slide, sim::ensembleID);
     // Wipe existing trajectory file.
     if (clearFile)
     {
         pFile = fopen(FPATH, "w");
         fclose(pFile);
+        return;
     }
 
     pFile = fopen(FPATH, "a");
     fprintf(pFile, "ITEM: TIMESTEP\n%f\n", particles.kmc->totalKmcTime);
     fprintf(pFile, "ITEM: BOX BOUNDS pp pp pp\n0 %f\n0 %f\n0 %f\n", var::boxlength, var::boxlength, var::boxlength);
     fprintf(pFile, "ITEM: NUMBER OF ATOMS\n%d\n", sim::totalnumber);
-    fprintf(pFile, "ITEM: ATOMS id type x y z ix iy iz\n");
+    fprintf(pFile, "ITEM: ATOMS id type x y z con_I con_II ix iy iz\n");
     for (unsigned int i = 0; i < sim::totalnumber; i++)
     {
         if (i < sim::activenumber) {
             if (particles.prop[i].IsActive) {
-                fprintf(pFile, "%d 1 %5.4f %5.4f %5.4f %d %d %d\n",
-                    i + 1, particles.prop[i].pos[0], particles.prop[i].pos[1], (dimension == 3) ? particles.prop[i].pos[2] : 0, particles.prop[i].periodic[0], particles.prop[i].periodic[1], particles.prop[i].periodic[2]);
+                fprintf(pFile, "%d 1 %5.4f %5.4f %5.4f %d %d %d %d %d\n",
+                    i + 1, particles.prop[i].pos[0], particles.prop[i].pos[1], (dimension == 3) ? particles.prop[i].pos[2] : 0, particles.prop[i].kickNumber, particles.prop[i].kickNumber1, particles.prop[i].periodic[0], particles.prop[i].periodic[1], particles.prop[i].periodic[2]);
             }
             else {
-                fprintf(pFile, "%d 1 %5.4f %5.4f %5.4f %d %d %d\n",
-                    i + 1, particles.prop[i].pos[0], particles.prop[i].pos[1], (dimension == 3) ? particles.prop[i].pos[2] : 0, particles.prop[i].periodic[0], particles.prop[i].periodic[1], particles.prop[i].periodic[2]);
+                fprintf(pFile, "%d 1 %5.4f %5.4f %5.4f %d %d %d %d %d\n",
+                    i + 1, particles.prop[i].pos[0], particles.prop[i].pos[1], (dimension == 3) ? particles.prop[i].pos[2] : 0, particles.prop[i].kickNumber, particles.prop[i].kickNumber1, particles.prop[i].periodic[0], particles.prop[i].periodic[1], particles.prop[i].periodic[2]);
             }
         }
         else {
-            fprintf(pFile, "%d 2 %5.4f %5.4f %5.4f %d %d %d\n",
-                i + 1, particles.prop[i].pos[0], particles.prop[i].pos[1], (dimension == 3) ? particles.prop[i].pos[2] : 0, particles.prop[i].periodic[0], particles.prop[i].periodic[1], particles.prop[i].periodic[2]);
+            fprintf(pFile, "%d 2 %5.4f %5.4f %5.4f %d %d %d %d %d\n",
+                i + 1, particles.prop[i].pos[0], particles.prop[i].pos[1], (dimension == 3) ? particles.prop[i].pos[2] : 0, particles.prop[i].kickNumber, particles.prop[i].kickNumber1, particles.prop[i].periodic[0], particles.prop[i].periodic[1], particles.prop[i].periodic[2]);
         }
 
     }
@@ -73,7 +74,7 @@ void InputOutput::appendKickFrequency(Particle& particles, bool clearFile)
     FILE* fp;
     // wipe existing trajectory file
     char FPATH[100] = "";
-    sprintf(FPATH, "./Output/kicknumber.txt");
+    sprintf(FPATH, "./Output/kicknumber_id%d.txt", sim::ensembleID);
     if (clearFile) {
         fp = fopen(FPATH, "w");
         fclose(fp);
@@ -257,4 +258,29 @@ void InputOutput::outTopo(Particle& p, Box& box, bool clearFile)
         }
     }
     fclose(pFile);
+}
+
+void InputOutput::outAdj(Particle& p, int t)
+{
+    cudaMemcpy(p.kmc->flag, p.kmc->flag_, sizeof(int) * sim::activenumber * sim::activenumber, cudaMemcpyDeviceToHost);
+    FILE* fp;
+    char FPATH[100] = "";
+    sprintf(FPATH, "./Output/adj/adj_id_%d_%d.txt",sim::ensembleID, t);
+    fp = fopen(FPATH, "w");
+    for (int i = 0; i < sim::activenumber * sim::activenumber; i++) {
+        fprintf(fp, "%d\n", p.kmc->flag[i]);
+    }
+    fclose(fp);
+}
+
+void InputOutput::readAdj(Particle& p, const char* filename) {
+    FILE* fp;
+    char FPATH[100] = "";
+    sprintf(FPATH, "./Input/%s", filename);
+    fp = fopen(FPATH, "r");
+    for (int i = 0; i < sim::activenumber * sim::activenumber; i++) {
+        fscanf(fp, "%d", &p.kmc->flag[i]);
+    }
+    fclose(fp);
+    cudaMemcpy(p.kmc->flag_, p.kmc->flag, sizeof(int) * sim::activenumber * sim::activenumber, cudaMemcpyHostToDevice);
 }

@@ -17,6 +17,7 @@ void ParaProcess(int argc, char* argv[]);
 void setTemperature(Particle& p, HARMONIC& bond, LJ& nobond1, SC& nobond, Kratky_Porod& angle);
 
 #define KICK
+#define WARM 1
 int main(int argc, char* argv[]) {
 	
 	ParaProcess(argc, argv);
@@ -38,7 +39,8 @@ int main(int argc, char* argv[]) {
 	//bond
 	//FENE bond = FENE(fene::kb, fene::R0);
 	HARMONIC bond = HARMONIC(rouse::k, 0);
-	LJ bond1 = LJ(lj::epi, lj::sigma, lj::cutoff);
+	//LJ bond1 = LJ(lj::epi, lj::sigma, lj::cutoff);
+	SC bond1 = SC(lj::sigma, lj::epi, lj::Ecut, lj::ro, lj::cutoff, lj::rc, lj::rb, lj::barrier);
 
 	Kratky_Porod angle = Kratky_Porod(bend::ka);
 
@@ -70,41 +72,28 @@ int main(int argc, char* argv[]) {
 
 	//rouse relaxation 1000 s
 	//sim::warm_cycles = 1e10;
+	//inout.readAdj(p, "adj_153300.txt");
 	inout.outTopo(p, box, true);
 	cudaMemcpy(p.prop, p.prop_, sizeof(Prop) * sim::totalnumber, cudaMemcpyDeviceToHost);
 	inout.appendXyzTrajectory(DIMSIZE, p, true);
 	inout.appendKickFrequency(p, true);
 	int cnt = 0;
 	printf("warmstep is %d\n", sim::warm_cycles * sim::stepsPersecond);
-	/*
+#if WARM
 	for (int i = 0; i < sim::warm_cycles * sim::stepsPersecond; i++) {
 		//c.buildcelllist(p);
-		s.runMD(p, c, box_, bond, bond1, nobond);
-		if (i % (100*sim::stepsPersecond) == 0) {
-			printf("it have been warmed %d s\n", 100 * cnt++);
-			cudaMemcpy(p.prop, p.prop_, sizeof(Prop) * sim::totalnumber, cudaMemcpyDeviceToHost);
-			inout.appendXyzTrajectory(DIMSIZE, p, false);
-		}
+		s.runMD(p, c, box_, bond, bond1, nobond, pull);
+		//if (i % (100*sim::stepsPersecond) == 0) {
+		//	printf("it have been warmed %d s\n", 100 * cnt++);
+		//	cudaMemcpy(p.prop, p.prop_, sizeof(Prop) * sim::totalnumber, cudaMemcpyDeviceToHost);
+		//	inout.appendXyzTrajectory(DIMSIZE, p, false);
+		//}
 	}
-
 	cudaMemcpy(p.prop, p.prop_, sizeof(Prop) * sim::totalnumber, cudaMemcpyDeviceToHost);
-	inout.appendXyzTrajectory(DIMSIZE, p, true);
+	inout.appendXyzTrajectory(DIMSIZE, p, false);
 	printf("rouse chain relaxation is done!\n");
 
-	cudaEventRecord(stop, 0);
-	cudaEventSynchronize(stop);
-
-	cudaEventElapsedTime(&elapsedTime, start, stop);
-
-	std::cout << "real time cost " << elapsedTime << "ms" << std::endl;
-	cudaEventDestroy(start);
-	cudaEventDestroy(stop);
-
-	inout.appendCenterPosition(p, true);
-	inout.appendCorrelationTrajectory(p, true);
-	*/
-
-	//inout.readTopo(p);
+#endif 
 
 	int cycles = 0;
 	float t = 0;
@@ -122,7 +111,6 @@ int main(int argc, char* argv[]) {
 
 		//cudaMemcpy(p.prop, p.prop_, sizeof(Prop) * sim::totalnumber, cudaMemcpyDeviceToHost);
 		//inout.appendXyzTrajectory(DIMSIZE, p, false);
-
 
 		//cudaMemcpy(p.prop, p.prop_, sizeof(Prop) * sim::totalnumber, cudaMemcpyDeviceToHost);
 		//inout.appendXyzTrajectory(DIMSIZE, p, false);
@@ -142,6 +130,7 @@ int main(int argc, char* argv[]) {
 			cudaMemcpy(p.prop, p.prop_, sizeof(Prop) * sim::totalnumber, cudaMemcpyDeviceToHost);
 			inout.appendXyzTrajectory(DIMSIZE, p, false);
 			inout.appendKickFrequency(p, false);
+			inout.outAdj(p, countkick);
 			printf("have done %f s!\n", p.kmc->totalKmcTime);
 		}
 

@@ -63,25 +63,13 @@ inline void System::runKMC(Particle& p, Cell& c, BOND& bond, BOND1& bond1, NOBON
 
 	CalcBendingdU << < calc_blocks(sim::activenumber * sim::activenumber), THREADS_PERBLOCK >> > (p.prop_, p.kmc_, angle);
 
-	CalcRate << <calc_blocks(sim::activenumber * sim::activenumber), THREADS_PERBLOCK >> > (p.kmc_, p.prop_, p.states, media::beta, this->tau, p.dis_, sim::isCofRij);
+	CalcGrapplingIndicator << <calc_blocks(sim::activenumber * sim::activenumber), THREADS_PERBLOCK >> > (p.kmc_, p.states, this->tau, p.dis_, sim::isCofRij);
 
-	/*
-	cudaDeviceSynchronize();
-	* isDivergencyed = 0;
-	//printf("%d\n", *isDivergencyed);
+	CalcRate << <calc_blocks(sim::activenumber * sim::activenumber), THREADS_PERBLOCK >> > (p.kmc_, p.prop_, p.states, media::beta, this->tau, sim::isCofRij);
 
-	IsPosDivergency << <calc_blocks(sim::totalnumber), THREADS_PERBLOCK >> > (p.prop_, isDivergencyed);
-	cudaDeviceSynchronize();
+	Update_flag << <calc_blocks(sim::activenumber * sim::activenumber), THREADS_PERBLOCK >> > (p.kmc_, p.prop_, media::beta, p.states, kick::p10, kick::p_slide);
 
-	if (!(*isDivergencyed)) {
-		UpdateKickPosition << <calc_blocks(sim::totalnumber), THREADS_PERBLOCK >> > (p.prop_);
-	}
-	else {
-		printf("is divergencyed!\n");
-	}
-	*/
 	UpdateKickPosition << <calc_blocks(sim::totalnumber), THREADS_PERBLOCK >> > (p.prop_);
 
 	p.perodicBoundary(box);
-
 }

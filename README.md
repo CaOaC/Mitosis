@@ -9,7 +9,7 @@ Simulation tools for modeling the motorized chromosome.
 
 
 - Simulates the formation process of motor-driven chromosome structure
-- Supports both purely sequence-distance-dependent and domain-specific spatial-distance-dependent motor grabbing probabilities
+- Supports both purely sequence-distance-dependent and domain-specific spatial-distance-dependent motor grappling probabilities
 - Supports constant-force stretching of the chromosome
 - Implements Condensin I / II motor activity models with residence
 - Compatible with OVITO for visualization of `.dump` and `.data` trajectory files

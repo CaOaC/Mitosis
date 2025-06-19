@@ -20,9 +20,8 @@ Simulation tools for modeling the motorized chromosome.
 
 - [CUDA](https://developer.nvidia.com/cuda-downloads) ≥ 11.2
 - [Make](https://www.gnu.org/software/make/) ≥ 4.2.1
-- OS: Recommended GNU/Linux (e.g., Ubuntu 20.04 or higher)
-
-
+- gcc (GCC) 9.3.1
+- OS: CentOS Linux 7 (Core) 7.9.2009
 
 ## 🚀 Usage
 
@@ -36,7 +35,7 @@ git clone https://github.com/CaOaC/Mitosis.git
 cd Mitosis/src
 
 # Prepare the input and output folders (准备输入和输出文件夹)
-mkdir Input Output
+mkdir Input Output
 
 # Compile and run the program (构建并运行程序)
 make -j8
@@ -52,7 +51,7 @@ make -j8
 
 
 
-You can load the following files from the **`Output`** **Output** **Output** **Output** directory into `OVITO` to visualize the simulation trajectory.
+You can load the following files from the **`Output`** **Output** **Output** **Output** **Output** **Output** directory into `OVITO` to visualize the simulation trajectory.
 
 - `.dump` file: trajectory animation
 - `.data` file: topological structure
@@ -64,7 +63,15 @@ You can load the following files from the **`Output`** **Output** **Output** **O
 
 
 
+
+
+
+
 <p>Visualization of chromosome folding process:</p>
+
+
+
+
 
 
 
@@ -76,7 +83,15 @@ You can load the following files from the **`Output`** **Output** **Output** **O
 
 
 
+
+
+
+
   <img src="./media/demo.gif" width="500"/>
+
+
+
+
 
 
 

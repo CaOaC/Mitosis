@@ -32,12 +32,15 @@ Clone the repository and compile the code:
 ```bash
 git clone https://github.com/CaOaC/Mitosis.git
 
-cd Mitosis/src
+
+cd Mitosis/src
 
 # Prepare the input and output folders (准备输入和输出文件夹)
-mkdir Input Output
 
-# Compile and run the program (构建并运行程序)
+mkdir Input Output
+
+
+# Compile and run the program (构建并运行程序)
 make -j8
 
 ./kickModel
@@ -116,7 +119,7 @@ The initial structures for the simulation refer to "input_interphase.txt" and "m
 
 
 
-The representative simulated trajectories for both the puly sequence-distance-dependent model and the domain-specific spatial-distance-dependent model are attached at [https://drive.google.com/drive/folders/1t2pTvgPTHxSTNimGVahHoQ1uWVwCQbTx?usp=sharing](https://drive.google.com/drive/folders/1t2pTvgPTHxSTNimGVahHoQ1uWVwCQbTx?usp=sharing) ("Output_sequence dependent.zip" and "Output_r dependent.zip"). Each compressed file contains at least 13 simulated trajectories to ensure repeatability by starting with different random initial configurations. Drag the corresponding ".dump" file and ".data" files into OVITO simultaneously to view the evolution of the simulation trajectory. The kicking numbers for each bead per unit time are recorded in the ".txt" file.
+The representative simulated trajectories for both the puly sequence-distance-dependent model and the domain-specific spatial-distance-dependent model are attached at [https://drive.google.com/drive/folders/1t2pTvgPTHxSTNimGVahHoQ1uWVwCQbTx?usp=sharing](https://drive.google.com/drive/folders/1t2pTvgPTHxSTNimGVahHoQ1uWVwCQbTx?usp=sharing) ("Output_sequence dependent.zip" and "Output_r dependent.zip"). Each trajectory has been ensured to be repeatable by starting with different random initial configurations. Drag the corresponding ".dump" file and ".data" files into OVITO simultaneously to view the evolution of the simulation trajectory. The kicking numbers for each bead per unit time are recorded in the ".txt" file.
 
 
 

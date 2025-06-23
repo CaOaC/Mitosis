@@ -119,8 +119,8 @@ The initial structures for the simulation refer to "input_interphase.txt" and "m
 
 
 
-The representative simulated trajectories for both the puly sequence-distance-dependent model and the domain-specific spatial-distance-dependent model are attached at [https://drive.google.com/drive/folders/1t2pTvgPTHxSTNimGVahHoQ1uWVwCQbTx?usp=sharing](https://drive.google.com/drive/folders/1t2pTvgPTHxSTNimGVahHoQ1uWVwCQbTx?usp=sharing) ("Output_sequence dependent.zip" and "Output_r dependent.zip"). Each trajectory has been ensured to be repeatable by starting with different random initial configurations. Drag the corresponding ".dump" file and ".data" files into OVITO simultaneously to view the evolution of the simulation trajectory. The kicking numbers for each bead per unit time are recorded in the ".txt" file.
+Some representative simulated trajectories for both the puly sequence-distance-dependent model and the domain-specific spatial-distance-dependent model are attached at [https://drive.google.com/drive/folders/1t2pTvgPTHxSTNimGVahHoQ1uWVwCQbTx?usp=sharing](https://drive.google.com/drive/folders/1t2pTvgPTHxSTNimGVahHoQ1uWVwCQbTx?usp=sharing) ("Output_sequence dependent.zip" and "Output_r dependent.zip") for reference. Each steady state conformation has been ensured to be statistically repeatable by starting with different random initial configurations. Drag the corresponding ".dump" file and ".data" files into OVITO simultaneously to view the evolution of the simulation trajectory. The kicking numbers for each bead per unit time are recorded in the ".txt" file.
 
 
 
-In addition, other programs used in the manuscript that process data are also available for reference and use.
+In addition, other programs used in the manuscript that process data are also available for reference.

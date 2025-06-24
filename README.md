@@ -54,7 +54,7 @@ make -j8
 
 
 
-You can load the following files from the **`Output`** **Output** **Output** **Output** **Output** **Output** directory into `OVITO` to visualize the simulation trajectory.
+You can load the following files from the **`Output`** directory into `OVITO` to visualize the simulation trajectory.
 
 - `.dump` file: trajectory animation
 - `.data` file: topological structure

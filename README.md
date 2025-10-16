@@ -22,6 +22,7 @@ Simulation tools for modeling the motorized chromosome.
 - [Make](https://www.gnu.org/software/make/) ≥ 4.2.1
 - gcc (GCC) 9.3.1
 - OS: CentOS Linux 7 (Core) 7.9.2009
+- OVITO ≥ 3.13
 
 ## 🚀 Usage
 
@@ -124,3 +125,4 @@ Some representative simulated trajectories for both the puly sequence-distance-d
 
 
 In addition, other programs used in the manuscript that process data are also available for reference.
+
